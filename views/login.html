@@ -1,6 +1,31 @@
-<form action="/login" method="post">
-<h2>Login</h2>
-<input name="email" placeholder="Email" required>
-<input type="password" name="password" placeholder="Senha" required>
-<button>Entrar</button>
+<form id="formLogin">
+  <input name="email" required />
+  <input type="password" name="password" required />
+  <button>Entrar</button>
 </form>
+
+<script>
+  document.getElementById("formLogin").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const f = e.target;
+
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: f.email.value,
+        password: f.password.value,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error);
+      return;
+    }
+
+    window.location.href = "/admin";
+  });
+</script>

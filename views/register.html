@@ -1,7 +1,36 @@
-<form action="/register" method="post">
-<h2>Criar conta</h2>
-<input name="name" placeholder="Nome" required>
-<input name="email" placeholder="Email" required>
-<input type="password" name="password" placeholder="Senha" required>
-<button>Cadastrar</button>
+<form id="formRegister">
+  <input name="name" placeholder="Nome" required>
+  <input name="email" placeholder="Email" required>
+  <input type="password" name="password" placeholder="Senha" required>
+  <button>Cadastrar</button>
 </form>
+
+<script>
+document.getElementById("formRegister").addEventListener("submit", async e =>{
+
+  e.preventDefault();
+
+  const f = e.target;
+
+  const res = await fetch("/api/users",{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({
+      name:f.name.value,
+      email:f.email.value,
+      password:f.password.value
+    })
+  });
+
+  const data = await res.json();
+
+  if(!res.ok){
+    alert(data.error);
+    return;
+  }
+
+  window.location.href="/login";
+
+});
+</script>
+
